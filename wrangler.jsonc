@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rcv-elections",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-11-01",
+  "routes": [{ "pattern": "elections.appfarms.org", "custom_domain": true }],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rcv-elections",
+      "database_id": "bae67ce2-1e2e-4096-b259-18ef76627bfa",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "RATE_LIMIT_PER_HOUR": "30",
+    "RESULTS_CACHE_SECONDS": "15"
+  },
+  "observability": { "enabled": true }
+}

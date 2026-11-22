@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AppFarms Elections</title>
+  <meta name="description" content="Ranked-choice voting you can embed on any website, with animated round-by-round results.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="module" src="/js/learn.js"></script>
+  <script src="/widget.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">AppFarms <span>Elections</span></a>
+      <nav><a href="#elections">Elections</a><a href="#learn">How it works</a><a href="#embed">Embed</a></nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="card">
+      <h1>Ranked-choice voting, counted in the open</h1>
+      <p class="lead">Add a ranked ballot to any web page with two lines of HTML. Then watch the count here, round by round,
+        as ballots move from candidate to candidate until the winners emerge.</p>
+      <div class="btn-row">
+        <a class="btn primary" href="/election?demo=irv">▶ Watch a 1-seat count</a>
+        <a class="btn" href="/election?demo=stv">▶ Watch a 3-seat count</a>
+        <a class="btn" href="#embed">Embed a ballot</a>
+      </div>
+    </section>
+
+    <section class="card" id="elections">
+      <h2>Elections</h2>
+      <input class="search" type="search" placeholder="Search by title or id…" aria-label="Search elections">
+      <ul class="elist"><li class="muted">Loading…</li></ul>
+    </section>
+
+    <section class="card" id="embed">
+      <h2>Embed a ballot on your site</h2>
+      <p>Works on any website: paste the script once, then add a <code>&lt;rcv-election&gt;</code> tag wherever you want a ballot.</p>
+<pre><code>&lt;script src="https://elections.appfarms.org/widget.js" defer&gt;&lt;/script&gt;
+
+&lt;rcv-election
+  election-id="example-com-board-2026"
+  title="Board of Directors 2026"
+  description="Choose three directors."
+  candidates="Alice Chen|Bob Ruiz|Carla Diaz|Dev Patel|Erin Wu"
+  seats="3"
+  closes="2026-12-31T23:59:00Z"&gt;
+&lt;/rcv-election&gt;</code></pre>
+
+      <div class="demo-grid">
+        <div>
+          <h3>Try it</h3>
+          <p class="muted">This is a live ballot. Your vote goes into a real election you can watch below the ballot.</p>
+          <rcv-election
+            election-id="appfarms-demo-lunch"
+            title="What should we have for team lunch?"
+            candidates="Tacos|Sushi|Pizza|Ramen|Salad bar"
+            seats="1"></rcv-election>
+        </div>
+        <div>
+          <h3>Attributes</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Attribute</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>election-id</code> <em>required</em></td><td>Unique, lowercase, 3–80 characters (a–z, 0–9, <code>.</code> <code>_</code> <code>-</code>). Ids are global, so start yours with your domain, e.g. <code>example-com-…</code></td></tr>
+              <tr><td><code>title</code> <em>required</em></td><td>Shown at the top of the ballot.</td></tr>
+              <tr><td><code>candidates</code> <em>required</em></td><td>Separated by <code>|</code>, or a JSON array. 2–40 candidates.</td></tr>
+              <tr><td><code>seats</code></td><td>Number of winners (default 1). 1 = instant runoff; more = single transferable vote.</td></tr>
+              <tr><td><code>description</code></td><td>Short text under the title.</td></tr>
+              <tr><td><code>opens</code>, <code>closes</code></td><td>ISO 8601 date-times, e.g. <code>2026-12-31T23:59:00Z</code>.</td></tr>
+              <tr><td><code>live-results</code></td><td><code>true</code> (default) shows results while voting is open; <code>false</code> hides them until <code>closes</code>.</td></tr>
+              <tr><td><code>unlisted</code></td><td><code>true</code> keeps the election off the public list on this site.</td></tr>
+              <tr><td><code>shuffle</code></td><td><code>false</code> shows candidates in the order given (default: shuffled per voter).</td></tr>
+              <tr><td><code>theme</code></td><td><code>auto</code> (default), <code>light</code> or <code>dark</code>.</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <h3>Good to know</h3>
+      <ul>
+        <li><strong>Settings lock on first use.</strong> The first page that loads an <code>election-id</code> sets its title, candidates, seats and dates.
+          Any embed of the same id must use identical settings, or it shows an error. To change an election, use a new id.</li>
+        <li><strong>The same election can be embedded on many sites.</strong> All ballots go into one count.</li>
+        <li><strong>One vote per browser.</strong> The widget remembers that a browser voted using that site's local storage, and the server rejects repeat ballots from the same browser.
+          This is a poll, not a secure election: someone who clears their storage or switches browsers can vote again, within a per-network rate limit.</li>
+        <li><strong>Styling.</strong> Set CSS custom properties on the element, such as <code>--rcv-accent</code>, <code>--rcv-bg</code>, <code>--rcv-fg</code>, <code>--rcv-border</code>, <code>--rcv-radius</code> and <code>--rcv-font</code>,
+          or style the parts <code>::part(card)</code>, <code>::part(submit)</code>, <code>::part(candidate)</code> and <code>::part(ranked-item)</code>.</li>
+        <li><strong>Events.</strong> The element fires <code>rcv-voted</code> (with <code>detail.ranking</code>) and <code>rcv-error</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card"><rcv-learn></rcv-learn></section>
+  </main>
+  <footer class="site-footer"><div class="wrap">Ranked-choice polls by AppFarms · results are informal and not verified elections.</div></footer>
+
+  <script type="module">
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+    const list = document.querySelector('.elist');
+    const search = document.querySelector('.search');
+    const label = { open: 'Open', closed: 'Closed', upcoming: 'Upcoming' };
+    let timer;
+    async function load(q = '') {
+      try {
+        const res = await fetch(`/api/elections?q=${encodeURIComponent(q)}`);
+        const { elections } = await res.json();
+        list.innerHTML = elections.length
+          ? elections.map((e) => `<li>
+              <div><a href="/election?id=${encodeURIComponent(e.id)}">${esc(e.title)}</a>
+                <div class="meta">${esc(e.id)}${e.homeOrigin ? ` · first seen on ${esc(new URL(e.homeOrigin).host)}` : ''}</div></div>
+              <div class="meta">${label[e.status]} · ${e.ballotCount} ballot${e.ballotCount === 1 ? '' : 's'} · ${e.seats} seat${e.seats === 1 ? '' : 's'}</div>
+            </li>`).join('')
+          : `<li class="muted">${q ? 'No elections match.' : 'No elections yet. Embed a ballot to create one.'}</li>`;
+      } catch {
+        list.innerHTML = `<li class="muted">Couldn't load elections.</li>`;
+      }
+    }
+    search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => load(search.value), 250); });
+    document.addEventListener('rcv-voted', () => load(search.value));
+    load();
+  </script>
+</body>
+</html>
