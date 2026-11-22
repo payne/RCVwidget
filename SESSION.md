@@ -182,6 +182,8 @@ Each round runs these steps in order:
 | `public/404.html`, `public/favicon.svg` | Not-found page and icon |
 | `public/_headers` | CORS and caching for `/widget.js` |
 | `test/tabulate.test.js` | 8 counting tests (`node --test`) |
+| `docs/index.html` | GitHub Pages page with four sample embedded elections (see section 9) |
+| `docs/.nojekyll` | Makes GitHub Pages serve `docs/` as is, without Jekyll |
 | `README.md` | Development, deploy and admin notes |
 | `.gitignore`, `.dev.vars` | Ignore rules. `.dev.vars` holds a local-only `IP_SALT` and is ignored by git |
 
@@ -263,5 +265,26 @@ npx wrangler d1 execute rcv-elections --remote --command \
 - **The home page demo ballot** (`appfarms-demo-lunch`) writes real ballots to the production database.
 - **No admin UI.** Moderation is done through D1 commands.
 - **Minor:** clicking a round button while dots are in flight is ignored until the transfer finishes.
-- **The project is not a git repository yet.**
+- **Git:** the project is on GitHub at `payne/RCVwidget` (branch `main`).
+- **Sample election settings in `docs/` lock on first page load.** Edit them before the page is first opened, or change the `election-id` too.
 - **Possible next steps:** signed configs or an origin allowlist per election, an admin page for unlisting or deleting elections, an iframe fallback, sorting or pagination for the directory, and live auto-refresh of results while voting is open.
+
+---
+
+## 9. Third request: GitHub Pages samples
+
+> Create a docs folder with four sample elections. I'll use this with github pages serving from the docs folder on the main branch.
+
+Added `docs/index.html`, a standalone page that loads `https://elections.appfarms.org/widget.js` and embeds four live elections. Each one has a collapsible "Embed code" snippet. Also added `docs/.nojekyll`.
+
+| # | `election-id` | Title | What it shows |
+|---|---|---|---|
+| 1 | `rcvwidget-sample-pizza-topping` | Best pizza topping | One seat (instant runoff), live results |
+| 2 | `rcvwidget-sample-book-club-2027` | Book club: three picks for 2027 | Three seats (STV), 8 candidates |
+| 3 | `rcvwidget-sample-team-offsite` | Spring team offsite location | `closes="2027-03-31T23:59:00Z"` and `live-results="false"`: results stay hidden until voting closes |
+| 4 | `rcvwidget-sample-community-garden` | Community garden: two new beds | Two seats, `shuffle="false"`, JSON candidates (one name contains `\|`), restyled with `--rcv-*` variables and `::part(submit)` |
+
+- Before publishing, `GET /api/elections/<id>/results` returned 404 for all four ids, so none were taken. The configs pass the `normalizeConfig` checks in `src/worker.js`.
+- The page follows the visitor's light or dark setting and works at phone width.
+- **To publish:** in the repo go to Settings → Pages → Deploy from a branch → `main` / `/docs`.
+
