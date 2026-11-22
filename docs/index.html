@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RCV Widget Samples</title>
+  <meta name="description" content="Four sample ranked-choice elections using the embeddable <rcv-election> widget from elections.appfarms.org.">
+  <link rel="icon" href="https://elections.appfarms.org/favicon.svg" type="image/svg+xml">
+  <script src="https://elections.appfarms.org/widget.js" defer></script>
+  <style>
+    :root {
+      --bg: #f6f7fb; --surface: #fff; --surface-2: #eef1f7; --fg: #1a2030; --muted: #5b6475;
+      --border: #dbe0ea; --accent: #2457d6; --radius: 14px;
+      --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 16px rgb(16 24 40 / 6%);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f131b; --surface: #171c26; --surface-2: #1f2633; --fg: #e7eaf1; --muted: #9aa3b4;
+        --border: #2b3343; --accent: #7aa2ff; color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+    header h1 { margin: 0 0 6px; font-size: 1.9rem; }
+    header p { margin: 0 0 6px; color: var(--muted); max-width: 70ch; }
+    a { color: var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; margin-top: 28px; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+    section h2 { margin: 0; font-size: 1.15rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .tags li { background: var(--surface-2); border-radius: 999px; padding: 2px 10px; font-size: .8rem; color: var(--muted); }
+    section > p { margin: 0; color: var(--muted); font-size: .95rem; }
+    details summary { cursor: pointer; font-size: .9rem; color: var(--accent); }
+    pre { margin: 8px 0 0; background: var(--surface-2); border-radius: 8px; padding: 12px; overflow-x: auto; font-size: .8rem; line-height: 1.45; }
+    rcv-election { max-width: none; }
+    /* Sample 4: a host page restyling the widget through CSS custom properties and ::part */
+    #garden {
+      --rcv-accent: #2f7d4f; --rcv-accent-fg: #fff; --rcv-soft: #eef6f0; --rcv-border: #cfe3d6;
+      --rcv-radius: 4px; --rcv-font: Georgia, "Times New Roman", serif;
+    }
+    #garden::part(submit) { text-transform: uppercase; letter-spacing: .06em; }
+    footer { margin-top: 40px; color: var(--muted); font-size: .9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ranked-choice voting widget: samples</h1>
+    <p>Four live sample elections, each embedded with one <code>&lt;rcv-election&gt;</code> tag. Votes are real and are counted on
+      <a href="https://elections.appfarms.org">elections.appfarms.org</a>. Each browser gets one vote per election.</p>
+    <p>Load the script once per page:</p>
+    <pre><code>&lt;script src="https://elections.appfarms.org/widget.js" defer&gt;&lt;/script&gt;</code></pre>
+  </header>
+
+  <div class="grid">
+    <section>
+      <h2>1. Single winner (instant runoff)</h2>
+      <ul class="tags"><li>seats = 1</li><li>live results</li></ul>
+      <p>The simplest case: one seat, so the count is an instant runoff. Results show right after you vote.</p>
+      <rcv-election election-id="rcvwidget-sample-pizza-topping"
+        title="Best pizza topping"
+        description="Rank as many as you like. Pineapple opinions welcome."
+        candidates="Pepperoni|Mushroom|Sausage|Pineapple|Margherita (basil)|Jalapeño"></rcv-election>
+      <details><summary>Embed code</summary>
+<pre><code>&lt;rcv-election election-id="rcvwidget-sample-pizza-topping"
+  title="Best pizza topping"
+  description="Rank as many as you like. Pineapple opinions welcome."
+  candidates="Pepperoni|Mushroom|Sausage|Pineapple|Margherita (basil)|Jalapeño"&gt;
+&lt;/rcv-election&gt;</code></pre></details>
+    </section>
+
+    <section>
+      <h2>2. Three winners (single transferable vote)</h2>
+      <ul class="tags"><li>seats = 3</li><li>Droop quota</li><li>surplus transfers</li></ul>
+      <p>More than one seat switches the count to STV. When a winner has more votes than they need, the extra votes pass to later choices.</p>
+      <rcv-election election-id="rcvwidget-sample-book-club-2027"
+        title="Book club: three picks for 2027"
+        description="The top three books become next year's reading list."
+        seats="3"
+        candidates="Project Hail Mary|The Remains of the Day|Piranesi|Educated|Klara and the Sun|The Overstory|Station Eleven|A Gentleman in Moscow"></rcv-election>
+      <details><summary>Embed code</summary>
+<pre><code>&lt;rcv-election election-id="rcvwidget-sample-book-club-2027"
+  title="Book club: three picks for 2027"
+  description="The top three books become next year's reading list."
+  seats="3"
+  candidates="Project Hail Mary|The Remains of the Day|Piranesi|Educated|Klara and the Sun|The Overstory|Station Eleven|A Gentleman in Moscow"&gt;
+&lt;/rcv-election&gt;</code></pre></details>
+    </section>
+
+    <section>
+      <h2>3. Sealed results with a deadline</h2>
+      <ul class="tags"><li>closes</li><li>live-results = false</li></ul>
+      <p>Results stay hidden until voting closes, so early votes can't sway later ones. Voting ends 31 March 2027.</p>
+      <rcv-election election-id="rcvwidget-sample-team-offsite"
+        title="Spring team offsite location"
+        description="Results are revealed when voting closes."
+        candidates="Mountain cabin|Beach house|City hotel|Lakeside camp|Stay home, bigger budget for food"
+        closes="2027-03-31T23:59:00Z"
+        live-results="false"></rcv-election>
+      <details><summary>Embed code</summary>
+<pre><code>&lt;rcv-election election-id="rcvwidget-sample-team-offsite"
+  title="Spring team offsite location"
+  description="Results are revealed when voting closes."
+  candidates="Mountain cabin|Beach house|City hotel|Lakeside camp|Stay home, bigger budget for food"
+  closes="2027-03-31T23:59:00Z"
+  live-results="false"&gt;
+&lt;/rcv-election&gt;</code></pre></details>
+    </section>
+
+    <section>
+      <h2>4. Custom styling, fixed order</h2>
+      <ul class="tags"><li>seats = 2</li><li>shuffle = false</li><li>JSON candidates</li><li>CSS variables</li></ul>
+      <p>Two winners. The candidate list is a JSON array, which helps when names contain a <code>|</code>. Candidates keep the given order, and the host page restyles the widget with <code>--rcv-*</code> variables and <code>::part(submit)</code>.</p>
+      <rcv-election id="garden" election-id="rcvwidget-sample-community-garden"
+        title="Community garden: two new beds"
+        description="Pick the two plantings for the new raised beds."
+        seats="2"
+        shuffle="false"
+        candidates='["Tomatoes & peppers","Herbs | basil, mint, thyme","Pollinator flowers","Strawberries","Squash & pumpkins"]'></rcv-election>
+      <details><summary>Embed code</summary>
+<pre><code>&lt;style&gt;
+  #garden {
+    --rcv-accent: #2f7d4f; --rcv-soft: #eef6f0; --rcv-border: #cfe3d6;
+    --rcv-radius: 4px; --rcv-font: Georgia, serif;
+  }
+  #garden::part(submit) { text-transform: uppercase; letter-spacing: .06em; }
+&lt;/style&gt;
+&lt;rcv-election id="garden" election-id="rcvwidget-sample-community-garden"
+  title="Community garden: two new beds"
+  description="Pick the two plantings for the new raised beds."
+  seats="2"
+  shuffle="false"
+  candidates='["Tomatoes &amp; peppers","Herbs | basil, mint, thyme","Pollinator flowers","Strawberries","Squash &amp; pumpkins"]'&gt;
+&lt;/rcv-election&gt;</code></pre></details>
+    </section>
+  </div>
+
+  <footer>
+    Full attribute reference, animated results and explainers: <a href="https://elections.appfarms.org">elections.appfarms.org</a>.
+    A browser can vote once per election. This is a poll, not a secure election.
+  </footer>
+</main>
+</body>
+</html>
